@@ -21,10 +21,25 @@ export class UsersService {
     });
   }
 
+  async findOneUsername(username: string): Promise<User> {
+    return this.usersRepository.findOne({
+      where: { username: username },
+      relations: ['ingredients'],
+    });
+  }
+
   findIngredients(id: number) {
     return this.usersRepository.findOne({
       where: { id },
       relations: ['ingredients'],
     });
+  }
+
+  async create(username: string, hashedPassword: string) {
+    const { password, ...result } = await this.usersRepository.save({
+      username,
+      password: hashedPassword,
+    });
+    return result;
   }
 }

@@ -1,13 +1,14 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
-import { Ingredient } from '../entities/ingredient.entity';
+import { Ingredient } from '../../entities/ingredient.entity';
+import { Role } from '../roles/role.enum';
 
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column('varchar', { length: 50 })
-  name: string;
+  @Column('varchar', { length: 50, unique: true })
+  username: string;
 
   // Password
   @Column('varchar', { length: 255 })
@@ -18,4 +19,7 @@ export class User {
 
   @OneToMany(() => Ingredient, (ingredient) => ingredient.discoveredBy)
   ingredients: Ingredient[];
+
+  @Column({ type: 'enum', enum: Role, default: 'user' })
+  role: Role;
 }

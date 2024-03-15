@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { User } from '../auth/users/users.entity';
 
 @Entity()
 export class Ingredient {
@@ -11,6 +12,8 @@ export class Ingredient {
   @Column('varchar', { length: 10 })
   emoji: string;
 
-  @Column('int')
-  discoveredBy: number;
+  @ManyToOne(() => User, (user: User) => user.ingredients, {
+    nullable: false,
+  })
+  discoveredBy: User;
 }
